@@ -140,13 +140,13 @@ export default function TicketForm({ baseUrl, clinicId, userId }: TicketFormProp
 
   return (
     <div
-      className={`grid gap-8 ${
+      className={`grid gap-6 ${
         previewMode === 'desktop'
-          ? 'lg:grid-cols-[minmax(22rem,30rem)_minmax(40rem,1.4fr)]'
+          ? 'lg:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] xl:grid-cols-[minmax(0,30rem)_minmax(0,1.4fr)]'
           : 'lg:grid-cols-2'
       }`}
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="min-w-0 space-y-6">
         <div>
           <label htmlFor="page" className="mb-2 block text-sm font-medium text-gray-700">
             Page
@@ -215,7 +215,7 @@ export default function TicketForm({ baseUrl, clinicId, userId }: TicketFormProp
           {submitting ? 'Submitting...' : 'Create Request'}
         </button>
       </form>
-      <div>
+      <div className="min-w-0">
         <div className="mb-4 flex items-center justify-between gap-4">
           <h2 className="text-sm font-medium text-gray-500">Preview</h2>
           <div className="inline-flex rounded-md border border-gray-200 bg-gray-50 p-0.5 text-xs font-medium text-gray-700">

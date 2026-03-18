@@ -106,10 +106,10 @@ export default function TicketTable({
         <table className="min-w-full table-fixed">
           <colgroup>
             {isInternal && <col className="w-[18%]" />}
-            <col className={isInternal ? 'w-[22%]' : 'w-[25%]'} />
-            <col className={isInternal ? 'w-[28%]' : 'w-[30%]'} />
-            <col className={isInternal ? 'w-[14%]' : 'w-[20%]'} />
-            <col className={isInternal ? 'w-[18%]' : 'w-[25%]'} />
+            <col className={isInternal ? 'w-[22%]' : 'w-[24%]'} />
+            <col className={isInternal ? 'w-[24%]' : 'w-[26%]'} />
+            <col className={isInternal ? 'w-[18%]' : 'w-[24%]'} />
+            <col className={isInternal ? 'w-[18%]' : 'w-[26%]'} />
           </colgroup>
           <thead>
             <tr>
@@ -135,10 +135,10 @@ export default function TicketTable({
         <table className="min-w-full table-fixed">
           <colgroup>
             {isInternal && <col className="w-[18%]" />}
-            <col className={isInternal ? 'w-[22%]' : 'w-[25%]'} />
-            <col className={isInternal ? 'w-[28%]' : 'w-[30%]'} />
-            <col className={isInternal ? 'w-[14%]' : 'w-[20%]'} />
-            <col className={isInternal ? 'w-[18%]' : 'w-[25%]'} />
+            <col className={isInternal ? 'w-[22%]' : 'w-[24%]'} />
+            <col className={isInternal ? 'w-[24%]' : 'w-[26%]'} />
+            <col className={isInternal ? 'w-[18%]' : 'w-[24%]'} />
+            <col className={isInternal ? 'w-[18%]' : 'w-[26%]'} />
           </colgroup>
           <tbody className="divide-y divide-gray-200 bg-white">
             {tickets.map((ticket) => {
@@ -167,7 +167,7 @@ export default function TicketTable({
                   <td className={`${colClasses} text-sm text-gray-600`}>
                     {ISSUE_LABELS[ticket.issue ?? ''] ?? ticket.issue ?? '—'}
                   </td>
-                  <td className={colClasses}>
+                  <td className={`${colClasses} align-top`}>
                     <StatusChip status={ticket.status} />
                   </td>
                   <td className={`${colClasses} text-sm text-gray-500`}>
