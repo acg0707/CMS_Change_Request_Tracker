@@ -4,8 +4,9 @@ import { useRouter } from 'next/navigation';
 import { formatDateOnly } from '@/lib/date';
 import { PAGE_LABELS, ISSUE_LABELS } from '@/lib/constants';
 import StatusChip from '@/components/status-chip';
+import AssignmentTableSelect, { AssignmentPill } from '@/components/assignment-table-select';
 
-type SortKey = 'date' | 'page' | 'issue' | 'status' | 'clinic';
+type SortKey = 'date' | 'page' | 'issue' | 'status' | 'clinic' | 'assignee';
 
 type ClinicTicket = {
   ticket_id: string;
@@ -15,9 +16,13 @@ type ClinicTicket = {
   created_at: string;
 };
 
+type InternalUser = { user_id: string; full_name: string };
+
 type InternalTicket = ClinicTicket & {
   clinic_id: string;
   clinics: { clinic_name?: string } | null;
+  assigned_to?: string | null;
+  assignee_full_name?: string | null;
 };
 
 type TicketTableProps = {
@@ -27,6 +32,8 @@ type TicketTableProps = {
   sort: SortKey;
   order: 'asc' | 'desc';
   onSort: (sort: SortKey, order: 'asc' | 'desc') => void;
+  assignees?: InternalUser[];
+  canAssign?: boolean;
 };
 
 function SortIcon({ direction }: { direction: 'asc' | 'desc' | null }) {
@@ -90,6 +97,8 @@ export default function TicketTable({
   sort,
   order,
   onSort,
+  assignees = [],
+  canAssign = false,
 }: TicketTableProps) {
   const router = useRouter();
 
@@ -105,10 +114,11 @@ export default function TicketTable({
       <div className="shrink-0 overflow-x-auto border-b border-gray-200 bg-gray-50">
         <table className="min-w-full table-fixed">
           <colgroup>
-            {isInternal && <col className="w-[18%]" />}
-            <col className={isInternal ? 'w-[22%]' : 'w-[24%]'} />
-            <col className={isInternal ? 'w-[24%]' : 'w-[26%]'} />
+            {isInternal && <col className="w-[14%]" />}
+            {isInternal && <col className="w-[14%]" />}
             <col className={isInternal ? 'w-[18%]' : 'w-[24%]'} />
+            <col className={isInternal ? 'w-[20%]' : 'w-[26%]'} />
+            <col className={isInternal ? 'w-[16%]' : 'w-[24%]'} />
             <col className={isInternal ? 'w-[18%]' : 'w-[26%]'} />
           </colgroup>
           <thead>
@@ -124,6 +134,34 @@ export default function TicketTable({
               )}
               <SortableHead label="Page" sortKey="page" currentSort={sort} currentOrder={order} onSort={onSort} />
               <SortableHead label="Issue" sortKey="issue" currentSort={sort} currentOrder={order} onSort={onSort} />
+              {isInternal && (
+                <th className="whitespace-nowrap px-4 py-3 text-left">
+                  <button
+                    type="button"
+                    onClick={() => onSort('assignee', sort === 'assignee' && order === 'asc' ? 'desc' : 'asc')}
+                    className="flex items-center font-medium text-gray-700 hover:text-[#1e3a5f]"
+                  >
+                    Assign
+                    <span className="ml-1 inline-block text-[#1e3a5f]">
+                      {sort === 'assignee' ? (
+                        order === 'asc' ? (
+                          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                          </svg>
+                        ) : (
+                          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        )
+                      ) : (
+                        <svg className="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                        </svg>
+                      )}
+                    </span>
+                  </button>
+                </th>
+              )}
               <SortableHead label="Status" sortKey="status" currentSort={sort} currentOrder={order} onSort={onSort} />
               <SortableHead label="Date" sortKey="date" currentSort={sort} currentOrder={order} onSort={onSort} />
             </tr>
@@ -134,10 +172,11 @@ export default function TicketTable({
       <div className="min-h-0 flex-1 overflow-auto">
         <table className="min-w-full table-fixed">
           <colgroup>
-            {isInternal && <col className="w-[18%]" />}
-            <col className={isInternal ? 'w-[22%]' : 'w-[24%]'} />
-            <col className={isInternal ? 'w-[24%]' : 'w-[26%]'} />
+            {isInternal && <col className="w-[14%]" />}
+            {isInternal && <col className="w-[14%]" />}
             <col className={isInternal ? 'w-[18%]' : 'w-[24%]'} />
+            <col className={isInternal ? 'w-[20%]' : 'w-[26%]'} />
+            <col className={isInternal ? 'w-[16%]' : 'w-[24%]'} />
             <col className={isInternal ? 'w-[18%]' : 'w-[26%]'} />
           </colgroup>
           <tbody className="divide-y divide-gray-200 bg-white">
@@ -167,6 +206,24 @@ export default function TicketTable({
                   <td className={`${colClasses} text-sm text-gray-600`}>
                     {ISSUE_LABELS[ticket.issue ?? ''] ?? ticket.issue ?? '—'}
                   </td>
+                  {isInternal && (
+                    <td
+                      className={`${colClasses} align-top`}
+                      onClick={(e) => e.stopPropagation()}
+                      onKeyDown={(e) => e.stopPropagation()}
+                    >
+                      {canAssign ? (
+                        <AssignmentTableSelect
+                          ticketId={ticket.ticket_id}
+                          assignedTo={t.assigned_to ?? null}
+                          assigneeFullName={t.assignee_full_name ?? null}
+                          internalUsers={assignees}
+                        />
+                      ) : (
+                        <AssignmentPill assigneeFullName={t.assignee_full_name ?? null} />
+                      )}
+                    </td>
+                  )}
                   <td className={`${colClasses} align-top`}>
                     <StatusChip status={ticket.status} />
                   </td>

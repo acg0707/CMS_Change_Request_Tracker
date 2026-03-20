@@ -60,3 +60,11 @@ export async function requireInternal(): Promise<UserWithProfile> {
   if (user.profile.role !== 'internal') redirect('/clinic/tickets');
   return user;
 }
+
+/** Returns true if the internal user can assign tickets (e.g. Manager role). */
+export function canAssignTickets(
+  profile: Pick<Profile, 'role' | 'position'>
+): boolean {
+  const pos = profile.position?.toLowerCase().trim();
+  return profile.role === 'internal' && pos === 'manager';
+}

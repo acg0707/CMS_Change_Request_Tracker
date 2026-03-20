@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import TicketTable from '@/components/ticket-table';
 import { PAGE_LABELS, ISSUE_LABELS } from '@/lib/constants';
 
-type SortKey = 'date' | 'page' | 'issue' | 'status' | 'clinic';
+type SortKey = 'date' | 'page' | 'issue' | 'status' | 'clinic' | 'assignee';
 
 type ClinicTicket = {
   ticket_id: string;

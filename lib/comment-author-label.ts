@@ -2,15 +2,20 @@ import { createServiceClient } from '@/lib/supabase/service';
 
 /**
  * Display label for a comment author. Same rules everywhere (clinic + internal UI).
- * - internal role → Support Team
- * - clinic role → position (e.g. Practice Manager) or "Clinic"
+ * - internal role → Support: [full_name]
+ * - clinic role → [position]: [full_name] (e.g. Practice Manager: Jen)
  */
 export function commentAuthorLabelFromProfile(
   role: string,
-  position: string | null | undefined
+  position: string | null | undefined,
+  fullName: string | null | undefined
 ): string {
-  if (role === 'internal') return 'Support Team';
-  return position?.trim() || 'Clinic';
+  const name = fullName?.trim() || '';
+  if (role === 'internal') {
+    return name ? `Support: ${name}` : 'Support';
+  }
+  const pos = position?.trim() || 'Clinic';
+  return name ? `${pos}: ${name}` : pos;
 }
 
 /**
@@ -27,11 +32,14 @@ export async function resolveCommentAuthorLabelMap(
   const service = createServiceClient();
   const { data: profiles } = await service
     .from('profiles')
-    .select('user_id, role, position')
+    .select('user_id, role, position, full_name')
     .in('user_id', ids);
 
   for (const p of profiles || []) {
-    map.set(p.user_id, commentAuthorLabelFromProfile(p.role, p.position));
+    map.set(
+      p.user_id,
+      commentAuthorLabelFromProfile(p.role, p.position, p.full_name)
+    );
   }
   return map;
 }

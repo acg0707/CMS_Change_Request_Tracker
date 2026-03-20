@@ -4,9 +4,11 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PAGES, TICKET_STATUSES, PAGE_LABELS } from '@/lib/constants';
 
+type Assignee = { user_id: string; full_name: string };
+
 type FiltersPopoverProps = {
   clinics: { clinic_id: string; clinic_name: string }[];
-  assignees: string[];
+  assignees: Assignee[];
   hasActiveFilters: boolean;
 };
 
@@ -20,6 +22,7 @@ export default function FiltersPopover({ clinics, assignees, hasActiveFilters }:
   const clinicFilter = searchParams.get('clinic_id') ?? '';
   const statusFilter = searchParams.get('status') ?? '';
   const assigneeFilter = searchParams.get('assigned_to') ?? '';
+  const isUnassignedFilter = assigneeFilter === '__unassigned__';
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -117,14 +120,15 @@ export default function FiltersPopover({ clinics, assignees, hasActiveFilters }:
             <div>
               <label className="mb-1 block text-xs font-medium text-gray-500">Assigned to</label>
               <select
-                value={assigneeFilter}
+                value={isUnassignedFilter ? '__unassigned__' : assigneeFilter}
                 onChange={(e) => updateFilter('assigned_to', e.target.value)}
                 className="w-full rounded border border-gray-300 px-2 py-1.5 text-sm text-gray-900"
               >
                 <option value="">All</option>
+                <option value="__unassigned__">Unassigned</option>
                 {assignees.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
+                  <option key={a.user_id} value={a.user_id}>
+                    {a.full_name}
                   </option>
                 ))}
               </select>

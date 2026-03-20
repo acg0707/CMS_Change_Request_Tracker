@@ -1,14 +1,17 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { requireInternal } from '@/lib/auth';
+import { requireInternal, canAssignTickets } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
+import { createServiceClient } from '@/lib/supabase/service';
 import { formatDate } from '@/lib/date';
 import { PAGE_LABELS, ISSUE_LABELS } from '@/lib/constants';
 import CommentList from '@/components/comment-list';
 import AttachmentList from '@/components/attachment-list';
 import StatusUpdate from '@/components/status-update';
 import StatusChip from '@/components/status-chip';
+import AssignmentSelect from '@/components/assignment-select';
 import { signedAttachmentsForTicket, withCommentAuthorLabels } from '@/lib/ticket-detail-helpers';
+import { resolveAssigneeDisplayMap } from '@/lib/assignee-display';
 
 export default async function InternalTicketDetailPage({
   params,
@@ -16,21 +19,39 @@ export default async function InternalTicketDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  await requireInternal();
+  const user = await requireInternal();
   const supabase = await createClient();
 
-  const [{ data: ticket, error }, { data: commentsRaw }, { data: attachmentsRaw }] = await Promise.all([
-    supabase.from('tickets').select('*, clinics(clinic_name, base_url)').eq('ticket_id', id).single(),
+  const service = createServiceClient();
+  const [
+    { data: ticket, error },
+    { data: commentsRaw },
+    { data: attachmentsRaw },
+    { data: internalUsers },
+  ] = await Promise.all([
+    supabase
+      .from('tickets')
+      .select('*, clinics(clinic_name, base_url)')
+      .eq('ticket_id', id)
+      .single(),
     supabase
       .from('comments')
       .select('comment_id, body, visibility, created_at, author_user_id')
       .eq('ticket_id', id)
       .order('created_at', { ascending: true }),
     supabase.from('attachments').select('attachment_id, file_name, file_url').eq('ticket_id', id),
+    service.from('profiles').select('user_id, full_name').eq('role', 'internal').order('full_name'),
   ]);
 
   const comments = await withCommentAuthorLabels(commentsRaw);
   const attachments = await signedAttachmentsForTicket(supabase, attachmentsRaw);
+
+  const assigneeMap = ticket?.assigned_to
+    ? await resolveAssigneeDisplayMap([ticket.assigned_to])
+    : new Map<string, string>();
+  const assigneeFullName = ticket?.assigned_to
+    ? assigneeMap.get(ticket.assigned_to) ?? 'Unknown'
+    : null;
 
   if (error || !ticket) {
     notFound();
@@ -49,8 +70,8 @@ export default async function InternalTicketDetailPage({
         </Link>
 
         <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <div className="mb-6 flex items-start justify-between">
-            <div>
+          <div className="mb-6 flex items-start justify-between gap-6">
+            <div className="min-w-0 flex-1">
               <h1 className="text-xl font-semibold text-gray-900">
                 {PAGE_LABELS[ticket.page] ?? ticket.page} · {ISSUE_LABELS[ticket.issue ?? ''] ?? ticket.issue}
               </h1>
@@ -58,9 +79,25 @@ export default async function InternalTicketDetailPage({
                 {clinic?.clinic_name} · Created {formatDate(ticket.created_at)}
               </p>
             </div>
-            <div className="flex items-center gap-4">
-              <StatusChip status={ticket.status} />
-              <StatusUpdate ticketId={ticket.ticket_id} currentStatus={ticket.status} />
+            <div className="flex shrink-0 flex-col items-end gap-3">
+              <div className="flex items-center gap-2">
+                <StatusChip status={ticket.status} />
+                <StatusUpdate ticketId={ticket.ticket_id} currentStatus={ticket.status} />
+              </div>
+              {canAssignTickets(user.profile) ? (
+                <AssignmentSelect
+                  ticketId={ticket.ticket_id}
+                  assignedTo={ticket.assigned_to ?? null}
+                  internalUsers={(internalUsers || []).map((p) => ({
+                    user_id: p.user_id,
+                    full_name: p.full_name?.trim() || 'Unknown',
+                  }))}
+                />
+              ) : (
+                <div className="self-end text-sm text-gray-500">
+                  Assign: {assigneeFullName || 'Unassigned'}
+                </div>
+              )}
             </div>
           </div>
 

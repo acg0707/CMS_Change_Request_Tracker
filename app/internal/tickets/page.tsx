@@ -1,11 +1,13 @@
 import { Suspense } from 'react';
-import { requireInternal } from '@/lib/auth';
+import { requireInternal, canAssignTickets } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
+import { createServiceClient } from '@/lib/supabase/service';
 import TicketListContent from '@/components/ticket-list-content';
 import TicketViews from '@/components/ticket-views';
 import FiltersPopover from '@/components/filters-popover';
+import { resolveAssigneeDisplayMap } from '@/lib/assignee-display';
 
-type SortKey = 'date' | 'page' | 'issue' | 'status' | 'clinic';
+type SortKey = 'date' | 'page' | 'issue' | 'status' | 'clinic' | 'assignee';
 
 export default async function InternalTicketsPage({
   searchParams,
@@ -20,7 +22,7 @@ export default async function InternalTicketsPage({
     assigned_to?: string;
   }>;
 }) {
-  await requireInternal();
+  const user = await requireInternal();
   const supabase = await createClient();
   const params = await searchParams;
 
@@ -53,7 +55,13 @@ export default async function InternalTicketsPage({
 
   if (params.page) query = query.eq('page', params.page);
   if (params.clinic_id) query = query.eq('clinic_id', params.clinic_id);
-  if (params.assigned_to) query = query.eq('assigned_to', params.assigned_to);
+  if (params.assigned_to) {
+    if (params.assigned_to === '__unassigned__') {
+      query = query.is('assigned_to', null);
+    } else {
+      query = query.eq('assigned_to', params.assigned_to);
+    }
+  }
 
   const sortColumn =
     sort === 'date'
@@ -65,19 +73,48 @@ export default async function InternalTicketsPage({
           : sort === 'status'
             ? 'status'
             : 'created_at';
-  if (sort !== 'clinic') {
+  if (sort !== 'clinic' && sort !== 'assignee') {
     query = query.order(sortColumn, { ascending: order === 'asc' });
   } else {
-    query = query.order('created_at', { ascending: false }); // fallback for clinic sort
+    query = query.order('created_at', { ascending: false }); // fallback for client-side sort
   }
 
   const { data: rawTickets, error } = await query;
 
-  let tickets = rawTickets;
+  const assigneeMap = await resolveAssigneeDisplayMap(
+    (rawTickets || []).map((t) => (t as { assigned_to?: string | null }).assigned_to)
+  );
+
+  const ticketsWithAssignees = (rawTickets || []).map((t) => {
+    const row = t as Record<string, unknown> & { assigned_to?: string | null };
+    return {
+      ...row,
+      assignee_full_name: row.assigned_to ? assigneeMap.get(row.assigned_to) ?? 'Unknown' : null,
+    };
+  }) as {
+    ticket_id: string;
+    clinic_id: string;
+    page: string;
+    issue: string | null;
+    status: string;
+    created_at: string;
+    clinics: { clinic_name?: string } | null;
+    assigned_to?: string | null;
+    assignee_full_name: string | null;
+  }[];
+
+  let tickets = ticketsWithAssignees;
   if (tickets && sort === 'clinic') {
     tickets = [...tickets].sort((a, b) => {
       const an = ((a as { clinics?: { clinic_name?: string } }).clinics?.clinic_name ?? '').toLowerCase();
       const bn = ((b as { clinics?: { clinic_name?: string } }).clinics?.clinic_name ?? '').toLowerCase();
+      const cmp = an.localeCompare(bn);
+      return order === 'asc' ? cmp : -cmp;
+    });
+  } else if (tickets && sort === 'assignee') {
+    tickets = [...tickets].sort((a, b) => {
+      const an = ((a as { assignee_full_name?: string }).assignee_full_name ?? '').toLowerCase();
+      const bn = ((b as { assignee_full_name?: string }).assignee_full_name ?? '').toLowerCase();
       const cmp = an.localeCompare(bn);
       return order === 'asc' ? cmp : -cmp;
     });
@@ -86,7 +123,13 @@ export default async function InternalTicketsPage({
   let countQuery = supabase.from('tickets').select('status');
   if (params.page) countQuery = countQuery.eq('page', params.page);
   if (params.clinic_id) countQuery = countQuery.eq('clinic_id', params.clinic_id);
-  if (params.assigned_to) countQuery = countQuery.eq('assigned_to', params.assigned_to);
+  if (params.assigned_to) {
+    if (params.assigned_to === '__unassigned__') {
+      countQuery = countQuery.is('assigned_to', null);
+    } else {
+      countQuery = countQuery.eq('assigned_to', params.assigned_to);
+    }
+  }
   const { data: countTickets } = await countQuery;
   const counts = { open: 0, pending: 0, in_progress: 0, needs_dev_change: 0, client_review: 0, follow_up_needed: 0, resolved: 0, all: 0 };
   for (const t of countTickets || []) {
@@ -105,12 +148,17 @@ export default async function InternalTicketsPage({
     .select('clinic_id, clinic_name')
     .order('clinic_name');
 
-  const { data: assigneeRows } = await supabase
-    .from('tickets')
-    .select('assigned_to')
-    .not('assigned_to', 'is', null);
+  const service = createServiceClient();
+  const { data: internalProfiles } = await service
+    .from('profiles')
+    .select('user_id, full_name')
+    .eq('role', 'internal')
+    .order('full_name');
 
-  const assignees = [...new Set((assigneeRows || []).map((r) => r.assigned_to).filter(Boolean))] as string[];
+  const assignees = (internalProfiles || []).map((p) => ({
+    user_id: p.user_id,
+    full_name: p.full_name?.trim() || 'Unknown',
+  }));
 
   if (error) {
     return (
@@ -120,7 +168,12 @@ export default async function InternalTicketsPage({
     );
   }
 
-  const hasActiveFilters = !!(params.page || params.clinic_id || params.status || params.assigned_to);
+  const hasActiveFilters = !!(
+    params.page ||
+    params.clinic_id ||
+    params.status ||
+    params.assigned_to
+  );
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
@@ -161,6 +214,8 @@ export default async function InternalTicketsPage({
                 basePath="/internal/tickets"
                 sort={sort}
                 order={order}
+                assignees={assignees}
+                canAssign={canAssignTickets(user.profile)}
               />
             </Suspense>
           )}

@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('role, clinic_id, position')
+    .select('role, clinic_id, position, full_name')
     .eq('user_id', session.user.id)
     .single();
 
@@ -31,7 +31,8 @@ export async function POST(request: Request) {
   const vis = profile.role === 'clinic' ? 'clinic_visible' : (visibility === 'internal' ? 'internal' : 'clinic_visible');
   const authorLabel = commentAuthorLabelFromProfile(
     profile.role,
-    (profile as { position?: string }).position
+    (profile as { position?: string }).position,
+    (profile as { full_name?: string }).full_name
   );
 
   const { data: comment, error } = await supabase

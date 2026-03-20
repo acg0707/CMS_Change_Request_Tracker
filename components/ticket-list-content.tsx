@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { PAGE_LABELS, ISSUE_LABELS } from '@/lib/constants';
 import TicketTable from './ticket-table';
 
-type SortKey = 'date' | 'page' | 'issue' | 'status' | 'clinic';
+type SortKey = 'date' | 'page' | 'issue' | 'status' | 'clinic' | 'assignee';
 
 type ClinicTicket = {
   ticket_id: string;
@@ -18,7 +18,11 @@ type ClinicTicket = {
 type InternalTicket = ClinicTicket & {
   clinic_id: string;
   clinics: { clinic_name?: string } | null;
+  assigned_to?: string | null;
+  assignee_full_name?: string | null;
 };
+
+export type InternalUser = { user_id: string; full_name: string };
 
 type TicketListContentProps = {
   tickets: ClinicTicket[] | InternalTicket[];
@@ -26,6 +30,8 @@ type TicketListContentProps = {
   basePath: string;
   sort: SortKey;
   order: 'asc' | 'desc';
+  assignees?: InternalUser[];
+  canAssign?: boolean;
 };
 
 function matchesSearch(ticket: ClinicTicket | InternalTicket, q: string, isInternal: boolean): boolean {
@@ -48,6 +54,8 @@ export default function TicketListContent({
   basePath,
   sort,
   order,
+  assignees = [],
+  canAssign = false,
 }: TicketListContentProps) {
   const [search, setSearch] = useState('');
   const router = useRouter();
@@ -94,6 +102,8 @@ export default function TicketListContent({
             sort={sort}
             order={order}
             onSort={onSort}
+            assignees={assignees}
+            canAssign={canAssign}
           />
         </div>
       )}
