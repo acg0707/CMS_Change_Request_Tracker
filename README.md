@@ -4,6 +4,26 @@ A role-based **CMS Change Request Tracker** for managed service providers (MSPs)
 
 This repository includes a demo data model and UI that uses a **fictional clinic** context. Any sample clinics, users, websites, or URLs referenced in docs or seed examples are **fictional**.
 
+## Live demo
+
+A hosted demo is available here before running the project locally:
+
+**Cloudflare demo:** [https://cms-change-request-tracker.aadityacgupta.workers.dev/login](https://cms-change-request-tracker.aadityacgupta.workers.dev/login)
+### Demo accounts
+
+These accounts are provided for demo and evaluation purposes only. All data shown is fictional.
+
+| Role | Email | Password |
+|------|-------|----------|
+| Internal | admin@crt.com | admin1234 |
+| Internal | emp@crt.com | emp1234 |
+| Client | jack1@vet.com | jack1 |
+| Client | jen2@vet.com | jen2 |
+| Client | jojo3@vet.com | jojo3 |
+
+## Product Walkthrough Presentation
+[`assets/cms-crt-demo.pdf`](./assets/cms-crt-demo.pdf)
+
 ## The problem
 
 MSPs often receive website requests through email/IM, which makes it hard to:
