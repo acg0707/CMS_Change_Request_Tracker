@@ -22,7 +22,7 @@ These accounts are provided for demo and evaluation purposes only. All data show
 | Client | jojo3@vet.com | jojo3 |
 
 ## Product Walkthrough Presentation
-[`assets/cms-crt-demo.pdf`](./assets/cms-crt-demo.pdf)
+[`/Users/Aaditya/Desktop/CMS Change Request Tool/cms-change-requests-demo/assets/CMS-CRT Demo.pdf`](./assets/cms-crt-demo.pdf) 
 
 ## The problem
 
