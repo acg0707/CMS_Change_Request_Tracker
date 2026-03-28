@@ -32,6 +32,7 @@ MSPs often receive website requests through email/IM, which makes it hard to:
 - Track status and SLA expectations across many client sites
 - Keep client-visible communication separate from internal notes
 - Centralize files/attachments related to a request
+- In a 10 phase rollout with roughly 1,500 website change tickets, a structured workflow like this could conservatively save an estimated 150 to 250 hours by reducing manual follow ups, scattered context, and status tracking.
 
 ## Who it’s for
 
