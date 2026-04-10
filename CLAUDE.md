@@ -1,6 +1,6 @@
-# Contributing notes (Cursor / AI-assisted workflow)
+# Contributing notes (Claude Code / AI-assisted workflow)
 
-This file is optional guidance for contributors who use Cursor or other AI-assisted editors on this repo. It is written to be safe for a public repository.
+This file is optional guidance for contributors who use Claude Code or other AI-assisted editors on this repo. It is written to be safe for a public repository.
 
 ## Source of truth
 
