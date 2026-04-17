@@ -5,16 +5,16 @@ import { commentAuthorLabelFromProfile } from '@/lib/comment-author-label';
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session?.user) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const { data: profile } = await supabase
     .from('profiles')
     .select('role, clinic_id, position, full_name')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single();
 
   if (!profile) {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     .from('comments')
     .insert({
       ticket_id,
-      author_user_id: session.user.id,
+      author_user_id: user.id,
       visibility: vis,
       body: commentBody.trim(),
     })
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
       ticket_id,
       recipient_role: 'internal',
       recipient_clinic_id: null,
-      actor_user_id: session.user.id,
+      actor_user_id: user.id,
       actor_label: authorLabel,
       type: 'comment_added',
       message: 'New comment on your ticket',
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
       ticket_id,
       recipient_role: 'clinic',
       recipient_clinic_id: ticket.clinic_id,
-      actor_user_id: session.user.id,
+      actor_user_id: user.id,
       actor_label: authorLabel,
       type: 'comment_added',
       message: 'New comment on your ticket',

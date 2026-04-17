@@ -8,16 +8,16 @@ export async function POST(
 ) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session?.user) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const { data: profile } = await supabase
     .from('profiles')
     .select('role, clinic_id, position')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single();
 
   if (!profile || profile.role !== 'clinic' || !profile.clinic_id) {
@@ -47,7 +47,7 @@ export async function POST(
   if (commentBody) {
     const { error: commentError } = await service.from('comments').insert({
       ticket_id: id,
-      author_user_id: session.user.id,
+      author_user_id: user.id,
       visibility: 'clinic_visible',
       body: commentBody,
     });
@@ -71,7 +71,7 @@ export async function POST(
     ticket_id: id,
     recipient_role: 'internal',
     recipient_clinic_id: null,
-    actor_user_id: session.user.id,
+    actor_user_id: user.id,
     actor_label: actorLabel,
     type: 'followup_requested',
     message: 'Follow-up requested for ticket',

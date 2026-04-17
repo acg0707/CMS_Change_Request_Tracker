@@ -21,6 +21,8 @@ The UI and example data model may reference a **fictional clinic** context for d
 
 - RLS enforces access. The UI does not attempt to bypass it.
 - Clinic users cannot update ticket status directly; status changes are performed by internal users or via server-side service-role routes where appropriate.
+- All server-side identity checks use `supabase.auth.getUser()`, which validates the token against the Supabase Auth server on every call. `getSession()` is never used server-side (see ADR-004).
+- `middleware.ts` runs on every request to refresh the session cookie before it expires and redirects unauthenticated users to `/login`.
 
 ## Routes (Current)
 
@@ -117,6 +119,7 @@ The UI and example data model may reference a **fictional clinic** context for d
 - Clinic cannot update ticket status directly; RLS restricts updates to internal. Reopen uses `POST /api/tickets/[id]/reopen` with service role.
 - Storage upload requires authenticated session (RLS policy checks `can_access_ticket`); uploads are done from the client with the browser Supabase client.
 - Date formatting uses UTC fixed format (`lib/date.ts`) to avoid hydration mismatches between server and client.
+- Server-side code must never use `supabase.auth.getSession()` — use `supabase.auth.getUser()` or the `getAuthUser()` helper from `lib/auth.ts` (see ADR-004).
 
 ## Non-goals
 

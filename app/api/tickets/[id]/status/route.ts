@@ -9,16 +9,16 @@ export async function PATCH(
 ) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session?.user) {
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const { data: profile } = await supabase
     .from('profiles')
     .select('role')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single();
 
   if (!profile || profile.role !== 'internal') {
@@ -56,7 +56,7 @@ export async function PATCH(
       ticket_id: id,
       recipient_role: 'clinic',
       recipient_clinic_id: ticketBefore.clinic_id,
-      actor_user_id: session.user.id,
+      actor_user_id: user.id,
       actor_label: 'Support Team',
       type: 'status_changed',
       message: `Status updated to ${status}`,
