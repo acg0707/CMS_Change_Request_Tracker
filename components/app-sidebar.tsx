@@ -55,7 +55,7 @@ export default function AppSidebar({
         />
       )}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex h-screen flex-col border-r border-white/10 bg-[#1e3a5f] transition-[width,transform] duration-200 md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex h-screen flex-col border-r border-white/10 bg-brand transition-[width,transform] duration-200 md:translate-x-0 ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{ width: `${sidebarWidth}px` }}
@@ -95,7 +95,7 @@ export default function AppSidebar({
                 {item.icon}
                 {item.showUnreadDot ? (
                   <span
-                    className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-amber-400 ring-2 ring-[#1e3a5f]"
+                    className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-amber-400 ring-2 ring-brand"
                     aria-hidden
                   />
                 ) : null}

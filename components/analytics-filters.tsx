@@ -49,7 +49,7 @@ export default function AnalyticsFilters({ clinics }: AnalyticsFiltersProps) {
         <select
           value={currentClinic}
           onChange={(e) => updateParam('clinic_id', e.target.value)}
-          className="min-w-[12rem] rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm focus:border-[#1e3a5f] focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/20"
+          className="min-w-[12rem] rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         >
           <option value="">All clinics</option>
           {clinics.map((c) => (
@@ -72,7 +72,7 @@ export default function AnalyticsFilters({ clinics }: AnalyticsFiltersProps) {
                 onClick={() => handleRangeChange(option.value)}
                 className={`rounded-lg px-3.5 py-2 text-sm font-medium transition ${
                   isActive
-                    ? 'bg-[#1e3a5f] text-white shadow-sm'
+                    ? 'bg-brand text-white shadow-sm'
                     : 'border border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300 hover:bg-white'
                 }`}
               >
@@ -88,7 +88,7 @@ export default function AnalyticsFilters({ clinics }: AnalyticsFiltersProps) {
         <select
           value={currentTicketStatus}
           onChange={(e) => updateParam('ticket_status', e.target.value)}
-          className="min-w-[12rem] rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm focus:border-[#1e3a5f] focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/20"
+          className="min-w-[12rem] rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         >
           <option value="">All statuses</option>
           {TICKET_STATUSES.map((status) => (

@@ -69,7 +69,7 @@ export default function NotificationsList({ notifications, isInternal }: Notific
           <button
             type="button"
             onClick={handleMarkAllRead}
-            className="rounded-md bg-[#1e3a5f] px-4 py-2 text-sm font-medium text-white hover:bg-[#2a4a6f]"
+            className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover"
           >
             Mark all as read
           </button>

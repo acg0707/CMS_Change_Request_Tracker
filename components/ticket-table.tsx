@@ -47,7 +47,7 @@ function SortIcon({ direction }: { direction: 'asc' | 'desc' | null }) {
     );
   }
   return (
-    <span className="ml-1 inline-block text-[#1e3a5f]">
+    <span className="ml-1 inline-block text-brand">
       {direction === 'asc' ? (
         <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
@@ -81,7 +81,7 @@ function SortableHead({
       <button
         type="button"
         onClick={() => onSort(sortKey, isActive && currentOrder === 'asc' ? 'desc' : 'asc')}
-        className="flex items-center font-medium text-gray-700 hover:text-[#1e3a5f]"
+        className="flex items-center font-medium text-gray-700 hover:text-brand"
       >
         {label}
         <SortIcon direction={direction} />
@@ -139,10 +139,10 @@ export default function TicketTable({
                   <button
                     type="button"
                     onClick={() => onSort('assignee', sort === 'assignee' && order === 'asc' ? 'desc' : 'asc')}
-                    className="flex items-center font-medium text-gray-700 hover:text-[#1e3a5f]"
+                    className="flex items-center font-medium text-gray-700 hover:text-brand"
                   >
                     Assign
-                    <span className="ml-1 inline-block text-[#1e3a5f]">
+                    <span className="ml-1 inline-block text-brand">
                       {sort === 'assignee' ? (
                         order === 'asc' ? (
                           <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

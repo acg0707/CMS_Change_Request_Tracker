@@ -127,7 +127,7 @@ function ClinicsFilters({
       <div className="flex items-end">
         <button
           type="submit"
-          className="rounded-md bg-[#1e3a5f] px-4 py-1.5 text-sm font-medium text-white hover:bg-[#2a4a6f]"
+          className="rounded-md bg-brand px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-hover"
         >
           Filter
         </button>

@@ -21,7 +21,7 @@ export default function AttachmentList({ attachments }: AttachmentListProps) {
               href={a.signed_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-[#1e3a5f] hover:underline"
+              className="text-sm text-brand hover:underline"
             >
               {a.file_name}
             </a>

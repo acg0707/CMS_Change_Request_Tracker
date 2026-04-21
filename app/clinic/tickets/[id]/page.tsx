@@ -94,7 +94,7 @@ export default async function ClinicTicketDetailPage({
                     href={ticket.page_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#1e3a5f] hover:underline"
+                    className="text-brand hover:underline"
                   >
                     {ticket.page_url}
                   </a>

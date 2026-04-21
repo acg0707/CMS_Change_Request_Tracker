@@ -3,7 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --sidebar-bg: #1e3a5f;
+  --sidebar-bg: #157145;
   --sidebar-collapsed-width: 64px;
   --sidebar-expanded-width: 240px;
 }
@@ -11,6 +11,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand: #157145;
+  --color-brand-hover: #0f5234;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

@@ -99,7 +99,7 @@ export default async function InternalClinicDetailPage({
             <h2 className="text-lg font-semibold text-gray-900">Recent tickets</h2>
             <Link
               href={`/internal/tickets?clinic_id=${clinic_id}`}
-              className="text-sm font-medium text-[#1e3a5f] hover:underline"
+              className="text-sm font-medium text-brand hover:underline"
             >
               View all tickets for {clinic.clinic_name}
             </Link>

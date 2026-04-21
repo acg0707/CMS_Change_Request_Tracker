@@ -122,7 +122,7 @@ export default async function InternalTicketDetailPage({
                     href={ticket.page_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#1e3a5f] hover:underline"
+                    className="text-brand hover:underline"
                   >
                     {ticket.page_url}
                   </a>
@@ -130,7 +130,7 @@ export default async function InternalTicketDetailPage({
                     href={ticket.page_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-4 inline-block rounded-md bg-[#1e3a5f] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#2a4a6f]"
+                    className="ml-4 inline-block rounded-md bg-brand px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-hover"
                   >
                     Open Page
                   </a>

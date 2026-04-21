@@ -9,7 +9,7 @@ type TicketStatusDonutProps = {
   data: TicketStatusSlice[];
 };
 
-const DEFAULT_COLORS = ['#1e3a5f', '#0f766e', '#f97316', '#9333ea', '#b91c1c', '#0369a1'];
+const DEFAULT_COLORS = ['#157145', '#0f766e', '#f97316', '#9333ea', '#b91c1c', '#0369a1'];
 
 export default function TicketStatusDonut({ title = 'Tickets by status', data }: TicketStatusDonutProps) {
   const total = data.reduce((sum, slice) => sum + slice.count, 0);

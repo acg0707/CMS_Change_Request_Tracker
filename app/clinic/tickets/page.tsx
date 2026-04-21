@@ -79,7 +79,7 @@ export default async function ClinicTicketsPage({
           <h1 className="text-xl font-semibold text-gray-900">My Change Requests</h1>
           <Link
             href="/clinic/tickets/new"
-            className="shrink-0 rounded-md bg-[#1e3a5f] px-4 py-2 text-sm font-medium text-white hover:bg-[#2a4a6f]"
+            className="shrink-0 rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover"
           >
             New Request
           </Link>
@@ -102,7 +102,7 @@ export default async function ClinicTicketsPage({
                 <p className="text-gray-500">No change requests match this view.</p>
                 <Link
                   href="/clinic/tickets/new"
-                  className="mt-4 inline-block text-sm font-medium text-[#1e3a5f] hover:underline"
+                  className="mt-4 inline-block text-sm font-medium text-brand hover:underline"
                 >
                   Create your first request
                 </Link>

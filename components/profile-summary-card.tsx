@@ -33,7 +33,7 @@ export default function ProfileSummaryCard({
     <div className="rounded-lg border border-gray-200 bg-white p-6">
       <div className="flex items-center gap-4">
         <div
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1e3a5f]/10 text-sm font-semibold text-[#1e3a5f]"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-sm font-semibold text-brand"
           aria-hidden
         >
           {initials || safeTitle[0]?.toUpperCase()}

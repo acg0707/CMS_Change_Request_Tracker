@@ -111,7 +111,7 @@ export default function CommentList({ ticketId, initialComments, isInternal }: C
         <button
           type="submit"
           disabled={submitting || !body.trim()}
-          className="rounded-md bg-[#1e3a5f] px-4 py-2 text-sm font-medium text-white hover:bg-[#2a4a6f] disabled:opacity-50"
+          className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover disabled:opacity-50"
         >
           {submitting ? 'Sending...' : 'Add comment'}
         </button>

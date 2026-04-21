@@ -73,7 +73,7 @@ export default function FileDropzone({ files, onChange, disabled }: FileDropzone
         onDragLeave={handleDragLeave}
         className={`min-h-[120px] rounded-lg border-2 border-dashed p-4 transition ${
           isDragOver
-            ? 'border-[#1e3a5f] bg-[#1e3a5f]/5'
+            ? 'border-brand bg-brand/5'
             : 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
         } ${disabled ? 'pointer-events-none opacity-60' : ''}`}
       >

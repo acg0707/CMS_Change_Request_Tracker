@@ -37,7 +37,7 @@ export default function UserNav({ onOpenMobileMenu }: { onOpenMobileMenu?: () =>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <span className="text-base font-semibold text-[#1e3a5f]">CMS Change Request Tracker</span>
+        <span className="text-base font-semibold text-brand">CMS Change Request Tracker</span>
       </div>
       <div className="flex items-center gap-3">
         {email && (
@@ -46,7 +46,7 @@ export default function UserNav({ onOpenMobileMenu }: { onOpenMobileMenu?: () =>
           </span>
         )}
         <div
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1e3a5f]/10 text-[#1e3a5f]"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand"
           aria-hidden
         >
           <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">

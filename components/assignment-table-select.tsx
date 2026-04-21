@@ -77,7 +77,7 @@ export default function AssignmentTableSelect({
       disabled={loading}
       onClick={(e) => e.stopPropagation()}
       onKeyDown={(e) => e.stopPropagation()}
-      className={`${pillBase} ${pillStyle} cursor-pointer appearance-none bg-[length:12px] bg-[right_6px_center] bg-no-repeat pr-7 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]/30 disabled:cursor-not-allowed`}
+      className={`${pillBase} ${pillStyle} cursor-pointer appearance-none bg-[length:12px] bg-[right_6px_center] bg-no-repeat pr-7 focus:outline-none focus:ring-2 focus:ring-brand/30 disabled:cursor-not-allowed`}
       style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
       }}

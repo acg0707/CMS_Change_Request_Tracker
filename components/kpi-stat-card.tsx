@@ -18,7 +18,7 @@ export default function KPIStatCard({ title, value, subtitle, variant = 'default
       <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</span>
       <span className="mt-3 text-3xl font-semibold tabular-nums text-gray-900">{value}</span>
       {subtitle ? <span className="mt-1.5 text-xs text-gray-500">{subtitle}</span> : null}
-      <div className="mt-4 h-1 w-12 rounded-full bg-[#1e3a5f]" />
+      <div className="mt-4 h-1 w-12 rounded-full bg-brand" />
     </div>
   );
 }

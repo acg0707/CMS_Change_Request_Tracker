@@ -53,7 +53,7 @@ export default function FiltersPopover({ clinics, assignees, hasActiveFilters }:
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition ${
           hasActiveFilters
-            ? 'border border-[#1e3a5f] bg-[#1e3a5f] text-white hover:bg-[#2a4a6f]'
+            ? 'border border-brand bg-brand text-white hover:bg-brand-hover'
             : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
         }`}
       >

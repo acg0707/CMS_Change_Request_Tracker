@@ -50,7 +50,7 @@ export default function TicketViews({ basePath, currentView, counts }: TicketVie
             href={`${basePath}?${params.toString()}`}
             className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
               isActive
-                ? 'bg-[#1e3a5f] font-medium text-white'
+                ? 'bg-brand font-medium text-white'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >

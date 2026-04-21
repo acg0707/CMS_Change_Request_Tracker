@@ -98,7 +98,7 @@ export default function RetryUpload({ ticketId }: RetryUploadProps) {
         type="button"
         onClick={handleUpload}
         disabled={!files?.length || uploading}
-        className="rounded-md bg-[#1e3a5f] px-4 py-2 text-sm font-medium text-white hover:bg-[#2a4a6f] disabled:opacity-50"
+        className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover disabled:opacity-50"
       >
         {uploading ? 'Uploading...' : 'Upload'}
       </button>
