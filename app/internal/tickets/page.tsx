@@ -32,8 +32,7 @@ export default async function InternalTicketsPage({
 
   let query = supabase
     .from('tickets')
-    .select('ticket_id, clinic_id, page, issue, status, assigned_to, created_at, clinics(clinic_name)')
-    .order('created_at', { ascending: false });
+    .select('ticket_id, clinic_id, page, issue, status, assigned_to, created_at, clinics(clinic_name)');
 
   const viewToStatus: Record<string, string> = {
     pending: 'Pending',
