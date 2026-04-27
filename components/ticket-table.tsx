@@ -109,77 +109,62 @@ export default function TicketTable({
   const colClasses = 'px-4 py-3';
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-gray-200">
-      {/* Fixed header – outside scroll container */}
-      <div className="shrink-0 overflow-x-auto border-b border-gray-200 bg-gray-50">
-        <table className="min-w-full table-fixed">
-          <colgroup>
-            {isInternal && <col className="w-[14%]" />}
-            {isInternal && <col className="w-[14%]" />}
-            <col className={isInternal ? 'w-[18%]' : 'w-[24%]'} />
-            <col className={isInternal ? 'w-[20%]' : 'w-[26%]'} />
-            <col className={isInternal ? 'w-[16%]' : 'w-[24%]'} />
-            <col className={isInternal ? 'w-[18%]' : 'w-[26%]'} />
-          </colgroup>
-          <thead>
-            <tr>
-              {isInternal && (
-                <SortableHead
-                  label="Clinic"
-                  sortKey="clinic"
-                  currentSort={sort}
-                  currentOrder={order}
-                  onSort={onSort}
-                />
-              )}
-              <SortableHead label="Page" sortKey="page" currentSort={sort} currentOrder={order} onSort={onSort} />
-              <SortableHead label="Issue" sortKey="issue" currentSort={sort} currentOrder={order} onSort={onSort} />
-              {isInternal && (
-                <th className="whitespace-nowrap px-4 py-3 text-left">
-                  <button
-                    type="button"
-                    onClick={() => onSort('assignee', sort === 'assignee' && order === 'asc' ? 'desc' : 'asc')}
-                    className="flex items-center font-medium text-gray-700 hover:text-brand"
-                  >
-                    Assign
-                    <span className="ml-1 inline-block text-brand">
-                      {sort === 'assignee' ? (
-                        order === 'asc' ? (
-                          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                          </svg>
-                        ) : (
-                          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        )
-                      ) : (
-                        <svg className="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+    <div className="min-h-0 flex-1 overflow-auto rounded-lg border border-gray-200">
+      <table className="min-w-full table-fixed">
+        <colgroup>
+          {isInternal && <col className="w-[14%]" />}
+          {isInternal && <col className="w-[14%]" />}
+          <col className={isInternal ? 'w-[18%]' : 'w-[24%]'} />
+          <col className={isInternal ? 'w-[20%]' : 'w-[26%]'} />
+          <col className={isInternal ? 'w-[16%]' : 'w-[24%]'} />
+          <col className={isInternal ? 'w-[18%]' : 'w-[26%]'} />
+        </colgroup>
+        <thead className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50">
+          <tr>
+            {isInternal && (
+              <SortableHead
+                label="Clinic"
+                sortKey="clinic"
+                currentSort={sort}
+                currentOrder={order}
+                onSort={onSort}
+              />
+            )}
+            <SortableHead label="Page" sortKey="page" currentSort={sort} currentOrder={order} onSort={onSort} />
+            <SortableHead label="Issue" sortKey="issue" currentSort={sort} currentOrder={order} onSort={onSort} />
+            {isInternal && (
+              <th className="whitespace-nowrap px-4 py-3 text-left">
+                <button
+                  type="button"
+                  onClick={() => onSort('assignee', sort === 'assignee' && order === 'asc' ? 'desc' : 'asc')}
+                  className="flex items-center font-medium text-gray-700 hover:text-brand"
+                >
+                  Assign
+                  <span className="ml-1 inline-block text-brand">
+                    {sort === 'assignee' ? (
+                      order === 'asc' ? (
+                        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                         </svg>
-                      )}
-                    </span>
-                  </button>
-                </th>
-              )}
-              <SortableHead label="Status" sortKey="status" currentSort={sort} currentOrder={order} onSort={onSort} />
-              <SortableHead label="Date" sortKey="date" currentSort={sort} currentOrder={order} onSort={onSort} />
-            </tr>
-          </thead>
-        </table>
-      </div>
-      {/* Scrollable body – only this area scrolls vertically */}
-      <div className="min-h-0 flex-1 overflow-auto">
-        <table className="min-w-full table-fixed">
-          <colgroup>
-            {isInternal && <col className="w-[14%]" />}
-            {isInternal && <col className="w-[14%]" />}
-            <col className={isInternal ? 'w-[18%]' : 'w-[24%]'} />
-            <col className={isInternal ? 'w-[20%]' : 'w-[26%]'} />
-            <col className={isInternal ? 'w-[16%]' : 'w-[24%]'} />
-            <col className={isInternal ? 'w-[18%]' : 'w-[26%]'} />
-          </colgroup>
-          <tbody className="divide-y divide-gray-200 bg-white">
+                      ) : (
+                        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      )
+                    ) : (
+                      <svg className="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                      </svg>
+                    )}
+                  </span>
+                </button>
+              </th>
+            )}
+            <SortableHead label="Status" sortKey="status" currentSort={sort} currentOrder={order} onSort={onSort} />
+            <SortableHead label="Date" sortKey="date" currentSort={sort} currentOrder={order} onSort={onSort} />
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200 bg-white">
             {tickets.map((ticket) => {
               const t = ticket as InternalTicket;
               const clinicName = t.clinics?.clinic_name ?? '';
@@ -233,9 +218,8 @@ export default function TicketTable({
                 </tr>
               );
             })}
-          </tbody>
-        </table>
-      </div>
+        </tbody>
+      </table>
     </div>
   );
 }
