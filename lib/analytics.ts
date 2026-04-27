@@ -199,11 +199,6 @@ export async function getTicketAnalytics(filters: TicketAnalyticsFilters): Promi
     for (const { key, label } of months) {
       bucketMap.set(key, { label, startIso: key, counts: emptyCounts() });
     }
-  } else {
-    const months = listMonthsInRange(filters.startDate, filters.endDate);
-    for (const { key, label } of months) {
-      bucketMap.set(key, { label, startIso: key, counts: emptyCounts() });
-    }
   }
 
   for (const t of tickets || []) {
