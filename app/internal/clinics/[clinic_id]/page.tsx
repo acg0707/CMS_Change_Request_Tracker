@@ -27,6 +27,13 @@ export default async function InternalClinicDetailPage({
     notFound();
   }
 
+  const { data: contacts } = await supabase
+    .from('profiles')
+    .select('full_name, position')
+    .eq('clinic_id', clinic_id)
+    .eq('role', 'clinic')
+    .order('full_name');
+
   const { data: tickets } = await supabase
     .from('tickets')
     .select('ticket_id, page, issue, status, created_at')
@@ -61,12 +68,12 @@ export default async function InternalClinicDetailPage({
           href="/internal/clinics"
           className="mb-6 inline-block text-sm text-gray-600 hover:underline"
         >
-          ← Back to clinics
+          ← Back to clients
         </Link>
 
         <div className="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
           <ProfileSummaryCard
-            title={clinic.clinic_name || 'Clinic'}
+            title={clinic.clinic_name || 'Client'}
             subtitle={cityState || undefined}
             secondarySubtitle={clinic.base_url ?? undefined}
             email={clinic.public_email ?? undefined}
@@ -75,12 +82,12 @@ export default async function InternalClinicDetailPage({
 
           <div className="space-y-4">
             <ProfileInfoSection
-              title="Clinic details"
-              rows={[
-                { label: 'Website', value: clinic.base_url },
-                { label: 'Phone', value: clinic.phone },
-                { label: 'Email', value: clinic.public_email },
-              ]}
+              title="Point of contact"
+              rows={
+                contacts?.length
+                  ? contacts.map((c) => ({ label: c.position || 'Contact', value: c.full_name }))
+                  : [{ label: 'Contact', value: null }]
+              }
             />
             <ProfileInfoSection
               title="Location"

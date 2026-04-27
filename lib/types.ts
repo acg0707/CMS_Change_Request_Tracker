@@ -14,7 +14,7 @@ export type Notification = {
 };
 
 /**
- * Clinic record with optional address/contact fields (for multi-user clinic support).
+ * Client record with optional address/contact fields (for multi-user client support).
  * All address/contact fields may be null if not yet populated.
  */
 export type Clinic = {

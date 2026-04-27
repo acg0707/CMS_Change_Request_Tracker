@@ -7,7 +7,7 @@ import { useHasUnreadNotifications } from '@/lib/use-has-unread-notifications';
 
 const NAV_ITEMS = [
   { href: '/internal/tickets', label: 'Tickets', icon: 'tickets' },
-  { href: '/internal/clinics', label: 'Clinics', icon: 'clinics' },
+  { href: '/internal/clinics', label: 'Clients', icon: 'clinics' },
   { href: '/internal/notifications', label: 'Notifications', icon: 'notifications' },
   { href: '/internal/analytics', label: 'Analytics', icon: 'analytics' },
 ] as const;

@@ -123,7 +123,7 @@ export default function TicketTable({
           <tr>
             {isInternal && (
               <SortableHead
-                label="Clinic"
+                label="Client"
                 sortKey="clinic"
                 currentSort={sort}
                 currentOrder={order}

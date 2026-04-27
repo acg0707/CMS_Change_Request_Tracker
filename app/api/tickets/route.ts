@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const actorLabel = (profile as { position?: string }).position?.trim() || 'Clinic';
+  const actorLabel = (profile as { position?: string }).position?.trim() || 'Client';
   const pageLabel = PAGE_LABELS[page] ?? page;
   const issueLabel = ISSUE_LABELS[issue ?? ''] ?? issue;
   const message = `New ticket: ${pageLabel} - ${issueLabel}`;

@@ -19,7 +19,7 @@ export async function withCommentAuthorLabels<T extends RawComment>(
 
   return rows.map((c) => ({
     ...c,
-    author_label: c.author_user_id ? (authorLabelMap.get(c.author_user_id) ?? 'Clinic') : 'Clinic',
+    author_label: c.author_user_id ? (authorLabelMap.get(c.author_user_id) ?? 'Client') : 'Client',
   }));
 }
 

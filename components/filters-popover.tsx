@@ -69,7 +69,7 @@ export default function FiltersPopover({ clinics, assignees, hasActiveFilters }:
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-10 mt-2 w-80 rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
+        <div className="absolute right-0 top-full z-30 mt-2 w-80 rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
           <h3 className="mb-3 text-sm font-semibold text-gray-900">Filters</h3>
           <div className="space-y-3">
             <div>
@@ -88,7 +88,7 @@ export default function FiltersPopover({ clinics, assignees, hasActiveFilters }:
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-500">Clinic</label>
+              <label className="mb-1 block text-xs font-medium text-gray-500">Client</label>
               <select
                 value={clinicFilter}
                 onChange={(e) => updateFilter('clinic_id', e.target.value)}

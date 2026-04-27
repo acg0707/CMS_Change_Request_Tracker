@@ -14,7 +14,7 @@ export function commentAuthorLabelFromProfile(
   if (role === 'internal') {
     return name ? `Support: ${name}` : 'Support';
   }
-  const pos = position?.trim() || 'Clinic';
+  const pos = position?.trim() || 'Client';
   return name ? `${pos}: ${name}` : pos;
 }
 

@@ -75,9 +75,9 @@ export default async function ClinicProfilePage() {
                 ]}
               />
               <ProfileInfoSection
-                title="Clinic information"
+                title="Client information"
                 rows={[
-                  { label: 'Clinic', value: clinic?.clinic_name },
+                  { label: 'Client', value: clinic?.clinic_name },
                   { label: 'Website', value: clinic?.base_url },
                   { label: 'Address', value: address, multiline: true },
                 ]}
@@ -86,8 +86,8 @@ export default async function ClinicProfilePage() {
                 title="Contact"
                 rows={[
                   { label: 'Email', value: user.email },
-                  { label: 'Clinic phone', value: clinic?.phone },
-                  { label: 'Clinic email', value: clinic?.public_email },
+                  { label: 'Client phone', value: clinic?.phone },
+                  { label: 'Client email', value: clinic?.public_email },
                 ]}
               />
             </div>

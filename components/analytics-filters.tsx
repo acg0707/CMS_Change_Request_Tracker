@@ -45,13 +45,13 @@ export default function AnalyticsFilters({ clinics }: AnalyticsFiltersProps) {
   return (
     <div className="flex flex-col gap-6 xl:flex-row xl:flex-wrap xl:items-end xl:gap-x-6 xl:gap-y-4">
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-semibold text-gray-600">Clinic</label>
+        <label className="text-xs font-semibold text-gray-600">Client</label>
         <select
           value={currentClinic}
           onChange={(e) => updateParam('clinic_id', e.target.value)}
           className="min-w-[12rem] rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
         >
-          <option value="">All clinics</option>
+          <option value="">All clients</option>
           {clinics.map((c) => (
             <option key={c.clinic_id} value={c.clinic_id}>
               {c.clinic_name}
