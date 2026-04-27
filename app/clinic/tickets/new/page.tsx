@@ -31,7 +31,6 @@ export default async function NewTicketPage() {
           <TicketForm
             baseUrl={baseUrl}
             clinicId={user.profile.clinic_id!}
-            userId={user.user_id}
           />
         </div>
       </div>

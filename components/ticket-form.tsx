@@ -9,12 +9,11 @@ import { createClient } from '@/lib/supabase/client';
 type TicketFormProps = {
   baseUrl: string;
   clinicId: string;
-  userId: string;
 };
 
 type PreviewMode = 'mobile' | 'desktop';
 
-export default function TicketForm({ baseUrl, clinicId, userId }: TicketFormProps) {
+export default function TicketForm({ baseUrl, clinicId }: TicketFormProps) {
   const [page, setPage] = useState<Page>('homepage');
   const [issue, setIssue] = useState(PAGE_ISSUE_MAP.homepage[0]);
   const [description, setDescription] = useState('');
@@ -66,7 +65,6 @@ export default function TicketForm({ baseUrl, clinicId, userId }: TicketFormProp
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           clinic_id: clinicId,
-          created_by_user_id: userId,
           page,
           issue,
           description,
