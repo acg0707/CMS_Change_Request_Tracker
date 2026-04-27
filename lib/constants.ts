@@ -67,6 +67,16 @@ export const STATUS_COLORS: Record<string, string> = {
   Resolved: 'bg-emerald-100 text-emerald-800 border-emerald-200',
 };
 
+/** Hex equivalents of STATUS_COLORS for chart/SVG contexts where Tailwind classes can't be used. */
+export const STATUS_HEX_COLORS: Record<string, string> = {
+  Pending: '#f59e0b',
+  'In progress': '#3b82f6',
+  'Needs dev change': '#a855f7',
+  'Client review': '#f97316',
+  'Follow up needed': '#ef4444',
+  Resolved: '#10b981',
+};
+
 export const SIDEBAR_COLLAPSED_WIDTH_PX = 64;
 export const SIDEBAR_EXPANDED_WIDTH_PX = 240;
 export const SIDEBAR_STORAGE_KEY = 'app.sidebar.expanded';

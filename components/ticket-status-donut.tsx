@@ -2,7 +2,7 @@
 
 import { Pie, PieChart, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import type { TicketStatusSlice } from '@/lib/analytics';
-import { STATUS_COLORS } from '@/lib/constants';
+import { STATUS_HEX_COLORS } from '@/lib/constants';
 
 type TicketStatusDonutProps = {
   title?: string;
@@ -15,15 +15,7 @@ export default function TicketStatusDonut({ title = 'Tickets by status', data }:
   const total = data.reduce((sum, slice) => sum + slice.count, 0);
 
   const slices = data.map((slice, index) => {
-    const colorFromStatus = STATUS_COLORS[slice.status];
-    let color = DEFAULT_COLORS[index % DEFAULT_COLORS.length];
-    if (colorFromStatus?.includes('bg-amber-')) color = '#f59e0b';
-    else if (colorFromStatus?.includes('bg-blue-')) color = '#3b82f6';
-    else if (colorFromStatus?.includes('bg-purple-')) color = '#a855f7';
-    else if (colorFromStatus?.includes('bg-orange-')) color = '#f97316';
-    else if (colorFromStatus?.includes('bg-red-')) color = '#ef4444';
-    else if (colorFromStatus?.includes('bg-emerald-')) color = '#10b981';
-
+    const color = STATUS_HEX_COLORS[slice.status] ?? DEFAULT_COLORS[index % DEFAULT_COLORS.length];
     return { ...slice, color };
   });
 

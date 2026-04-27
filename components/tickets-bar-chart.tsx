@@ -11,19 +11,7 @@ import {
   YAxis,
 } from 'recharts';
 import type { TicketTimeBucket } from '@/lib/analytics';
-import { TICKET_STATUSES, STATUS_COLORS } from '@/lib/constants';
-
-const STATUS_FILL: Record<string, string> = {};
-for (const s of TICKET_STATUSES) {
-  const c = STATUS_COLORS[s] ?? '';
-  if (c.includes('amber')) STATUS_FILL[s] = '#f59e0b';
-  else if (c.includes('blue')) STATUS_FILL[s] = '#3b82f6';
-  else if (c.includes('purple')) STATUS_FILL[s] = '#a855f7';
-  else if (c.includes('orange')) STATUS_FILL[s] = '#f97316';
-  else if (c.includes('red')) STATUS_FILL[s] = '#ef4444';
-  else if (c.includes('emerald')) STATUS_FILL[s] = '#10b981';
-  else STATUS_FILL[s] = '#6b7280';
-}
+import { TICKET_STATUSES, STATUS_HEX_COLORS } from '@/lib/constants';
 
 type TicketsBarChartProps = {
   data: TicketTimeBucket[];
@@ -57,7 +45,7 @@ export default function TicketsBarChart({ data }: TicketsBarChartProps) {
               dataKey={status}
               name={status}
               stackId="status"
-              fill={STATUS_FILL[status]}
+              fill={STATUS_HEX_COLORS[status] ?? '#6b7280'}
               radius={index === STACK_ORDER.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]}
             />
           ))}
