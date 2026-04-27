@@ -4,9 +4,31 @@ All notable changes to the CMS Change Request Tracker will be documented in this
 
 ## [Unreleased]
 
+### Fixed
+
+- **I-02** — Clinic notifications query now filters by `recipient_clinic_id`, preventing notifications for other clinics from appearing in a clinic user's feed
+- **I-03** — Clinic ticket detail comments query now filters by `clinic_visible = true`, preventing internal-only comments from leaking to the clinic view
+- **I-04** — Removed duplicate `.order()` call in the internal tickets query that was silently overriding the intended sort
+- **I-05** — Status update and assignee change on internal ticket detail now surfaces server errors to the user instead of silently failing
+
 ### Changed
 
-- Documentation updates for public GitHub publishing (MSP positioning, fictional demo context, clarified setup and architecture).
+- **I-06** — Replaced hardcoded `#157145` inline style with the `bg-brand` Tailwind alias; brand color is now defined in one place
+- **I-10** — Refactored `TicketTable` from a duplicated two-table frozen-header pattern to a single table with `position: sticky` on `thead`
+- **I-14** — Centralized chart hex colors into `STATUS_HEX_COLORS` in `lib/constants.ts`; chart components now import directly instead of deriving colors by string-matching Tailwind class names
+- Documentation updates for public GitHub publishing (MSP positioning, fictional demo context, clarified setup and architecture)
+
+### Removed
+
+- **I-07** — Removed dead `/api/attachments` route; attachment upload protection is enforced entirely by storage RLS (`can_access_ticket` policy)
+- **I-09** — Removed unreachable `else` branch in `getTicketAnalytics` (dead code from a prior refactor)
+- **I-11** — Removed always-identical conditional in `PreviewPanel.containerClasses`; replaced with a direct constant string
+- **I-12** — Removed unnecessary `'use client'` directive from `KPIStatCard`; component now renders as a server component
+- **I-13** — Removed `created_by_user_id` from the ticket creation POST body; the server always uses the verified session identity and the field was ignored
+
+### Performance
+
+- **I-08** — Parallelized `clinics` and `internalProfiles` Supabase queries on the internal tickets page with `Promise.all`, eliminating sequential round-trips
 
 ## [0.1.0] - 2026-03-18
 
