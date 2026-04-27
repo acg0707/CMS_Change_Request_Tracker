@@ -1,5 +1,3 @@
-'use client';
-
 type KPIStatCardProps = {
   title: string;
   value: number | string;
