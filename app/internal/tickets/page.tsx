@@ -142,17 +142,18 @@ export default async function InternalTicketsPage({
     if (t.status === 'Follow up needed') counts.follow_up_needed++;
   }
 
-  const { data: clinics } = await supabase
-    .from('clinics')
-    .select('clinic_id, clinic_name')
-    .order('clinic_name');
-
   const service = createServiceClient();
-  const { data: internalProfiles } = await service
-    .from('profiles')
-    .select('user_id, full_name')
-    .eq('role', 'internal')
-    .order('full_name');
+  const [{ data: clinics }, { data: internalProfiles }] = await Promise.all([
+    supabase
+      .from('clinics')
+      .select('clinic_id, clinic_name')
+      .order('clinic_name'),
+    service
+      .from('profiles')
+      .select('user_id, full_name')
+      .eq('role', 'internal')
+      .order('full_name'),
+  ]);
 
   const assignees = (internalProfiles || []).map((p) => ({
     user_id: p.user_id,
