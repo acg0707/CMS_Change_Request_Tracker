@@ -41,9 +41,11 @@ export default function AssignmentTableSelect({
 }: AssignmentTableSelectProps) {
   const [value, setValue] = useState(assignedTo ?? '');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   async function handleChange(newValue: string) {
+    setError(null);
     setLoading(true);
     try {
       const res = await fetch(`/api/tickets/${ticketId}/assign`, {
@@ -54,7 +56,12 @@ export default function AssignmentTableSelect({
       if (res.ok) {
         setValue(newValue);
         router.refresh();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError((data as { error?: string }).error || 'Assignment update failed');
       }
+    } catch {
+      setError('Assignment update failed');
     } finally {
       setLoading(false);
     }
@@ -71,24 +78,27 @@ export default function AssignmentTableSelect({
     : 'bg-gray-100 text-gray-600 border-gray-200';
 
   return (
-    <select
-      value={value}
-      onChange={(e) => handleChange(e.target.value)}
-      disabled={loading}
-      onClick={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-      className={`${pillBase} ${pillStyle} cursor-pointer appearance-none bg-[length:12px] bg-[right_6px_center] bg-no-repeat pr-7 focus:outline-none focus:ring-2 focus:ring-brand/30 disabled:cursor-not-allowed`}
-      style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
-      }}
-      title={displayLabel}
-    >
-      <option value="">Unassigned</option>
-      {internalUsers.map((u) => (
-        <option key={u.user_id} value={u.user_id}>
-          {u.full_name}
-        </option>
-      ))}
-    </select>
+    <>
+      <select
+        value={value}
+        onChange={(e) => handleChange(e.target.value)}
+        disabled={loading}
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        className={`${pillBase} ${pillStyle} cursor-pointer appearance-none bg-[length:12px] bg-[right_6px_center] bg-no-repeat pr-7 focus:outline-none focus:ring-2 focus:ring-brand/30 disabled:cursor-not-allowed`}
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`,
+        }}
+        title={displayLabel}
+      >
+        <option value="">Unassigned</option>
+        {internalUsers.map((u) => (
+          <option key={u.user_id} value={u.user_id}>
+            {u.full_name}
+          </option>
+        ))}
+      </select>
+      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
+    </>
   );
 }
