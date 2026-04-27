@@ -3,13 +3,14 @@ import { createClient } from '@/lib/supabase/server';
 import NotificationsList from '@/components/notifications-list';
 
 export default async function ClinicNotificationsPage() {
-  await requireClinic();
+  const user = await requireClinic();
   const supabase = await createClient();
 
   const { data: notifications } = await supabase
     .from('notifications')
     .select('id, clinic_id, ticket_id, recipient_role, recipient_clinic_id, actor_user_id, actor_label, type, message, is_read, created_at')
     .eq('recipient_role', 'clinic')
+    .eq('recipient_clinic_id', user.profile.clinic_id!)
     .order('created_at', { ascending: false });
 
   return (
