@@ -34,6 +34,7 @@ export default async function ClinicTicketDetailPage({
       .from('comments')
       .select('comment_id, body, visibility, created_at, author_user_id')
       .eq('ticket_id', id)
+      .eq('visibility', 'clinic_visible')
       .order('created_at', { ascending: true }),
     supabase.from('attachments').select('attachment_id, file_name, file_url').eq('ticket_id', id),
   ]);
