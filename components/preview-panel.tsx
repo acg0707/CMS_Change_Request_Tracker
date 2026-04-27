@@ -41,10 +41,7 @@ export default function PreviewPanel({ fullUrl, mode }: PreviewPanelProps) {
     return () => observer.disconnect();
   }, []);
 
-  const containerClasses =
-    mode === 'mobile'
-      ? 'flex w-full items-start justify-center'
-      : 'flex w-full items-start justify-center';
+  const containerClasses = 'flex w-full items-start justify-center';
 
   if (!fullUrl || !fullUrl.startsWith('http')) {
     return (
